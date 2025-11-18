@@ -1,0 +1,128 @@
+= go-nvmetcli image:https://godoc.org/github.com/Djarvur/go-nvmetcli?status.svg["GoDoc",link="http://godoc.org/github.com/Djarvur/go-nvmetcli"] image:https://github.com/Djarvur/go-nvmetcli/workflows/Test/badge.svg?branch=master["Build Status"] image:https://coveralls.io/repos/Djarvur/go-nvmetcli/badge.svg?branch=master&service=github["Coverage Status",link="https://coveralls.io/github/Djarvur/go-nvmetcli?branch=master"]
+Daniel Podolsky
+:toc:
+
+
+Go implementation of nvmetcli - a tool for managing NVMe Target configuration via configfs.
+
+This is a Go port of the original Python nvmetcli project, providing the same functionality with improved performance and a single static binary.
+
+*Repository:* https://github.com/Djarvur/go-nvmetcli[]
+
+*Note:* This Go port was created with assistance from AI (Cursor AI Assistant).
+
+== Version
+
+Version: 0.1.0
+
+== Features
+
+* Create and manage NVMe Target subsystems
+* Configure namespaces, ports, and hosts
+* Save and restore configuration to/from JSON files
+* Interactive shell for configuration management
+* Non-interactive commands for scripting
+
+== Installation
+
+[source,bash]
+----
+go install github.com/Djarvur/go-nvmetcli/cmd/nvmetcli@latest
+----
+
+Or build from source:
+
+[source,bash]
+----
+git clone https://github.com/Djarvur/go-nvmetcli
+cd go-nvmetcli
+go build -o nvmetcli ./cmd/nvmetcli
+----
+
+== Requirements
+
+* Go 1.21 or later
+* Linux kernel with NVMe Target support (nvmet module)
+* Root privileges (for accessing `/sys/kernel/config/nvmet`)
+
+== Usage
+
+=== Interactive Mode
+
+Run without arguments to enter interactive mode:
+
+[source,bash]
+----
+sudo nvmetcli
+----
+
+=== Non-Interactive Commands
+
+Save configuration to file:
+
+[source,bash]
+----
+sudo nvmetcli save [file]
+----
+
+Restore configuration from file:
+
+[source,bash]
+----
+sudo nvmetcli restore [file] [clear_existing]
+----
+
+Clear all configuration:
+
+[source,bash]
+----
+sudo nvmetcli clear
+----
+
+== Project Structure
+
+----
+go-nvmetcli/
+├── cmd/
+│   └── nvmetcli/          # Main executable
+│       └── main.go
+├── internal/
+│   └── nvmet/             # Library code
+│       ├── nvme.go        # Core configfs operations
+│       ├── subsystem.go   # Subsystem management
+│       ├── namespace.go   # Namespace management
+│       ├── port.go        # Port management
+│       ├── host.go        # Host management
+│       ├── referral.go    # Referral management
+│       ├── shell.go       # Interactive shell
+│       └── *_test.go      # Tests
+└── go.mod
+----
+
+== Development
+
+Run tests:
+
+[source,bash]
+----
+go test ./internal/nvmet/...
+----
+
+Build:
+
+[source,bash]
+----
+go build -o nvmetcli ./cmd/nvmetcli
+----
+
+== License
+
+Apache License 2.0
+
+== Credits
+
+This is a Go port of the original nvmetcli Python project by:
+
+* Copyright (c) 2011-2013 by Datera, Inc
+* Copyright (c) 2011-2014 by Red Hat, Inc
+* Copyright (c) 2016 by HGST, a Western Digital Company

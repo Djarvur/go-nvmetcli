@@ -1,22 +1,23 @@
 #!/usr/bin/make -f
 
-build_dir   = build
+export DH_VERBOSE = 1
+export GOPATH = $(CURDIR)/debian/gopath
+export GO111MODULE = on
+
 install_dir = $(CURDIR)/debian/nvmetcli
 
-# prevent internet access / don't use PyPi
-export http_proxy = http://127.0.0.1:9
-
-
 %:
-	dh $@ --with python2 --with systemd
+	dh $@ --with systemd
 
 override_dh_auto_build:
-	python setup.py build
+	go build -o nvmetcli ./cmd/nvmetcli
 
 override_dh_auto_install:
-	python setup.py install --root=$(install_dir) --install-layout=deb
+	mkdir -p $(install_dir)/usr/sbin
+	mkdir -p $(install_dir)/lib/systemd/system
+	install -m 755 nvmetcli $(install_dir)/usr/sbin/nvmetcli
+	install -m 644 nvmet.service $(install_dir)/lib/systemd/system/nvmet.service
 
 override_dh_auto_clean:
-	dh_auto_clean
-	rm -rf build
-	rm -rf *.egg-info
+	go clean -cache -testcache -modcache 2>/dev/null || true
+	rm -f nvmetcli

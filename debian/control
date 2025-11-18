@@ -1,13 +1,14 @@
 Source: nvmetcli
-Section: python
+Section: admin
 Priority: optional
-Maintainer: Christoph Hellwig <hch@lst.de>
-Build-Depends: debhelper(>= 8), python, python-setuptools, dh-python, dh-systemd  (>= 1.5)
+Maintainer: Djarvur <djarvur@example.com>
+Build-Depends: debhelper(>= 8), golang-go (>= 1.21), dh-systemd (>= 1.5)
 Standards-Version: 3.9.4
+Homepage: https://github.com/Djarvur/go-nvmetcli
 
 Package: nvmetcli
-Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-configshell-fb, python-kmodpy
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: Command line interface for the kernel NVMe target
  This package contains the command line interface to the NVMe over Fabrics
  target in the Linux kernel.  It allows configuring the target interactively
